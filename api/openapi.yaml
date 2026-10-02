@@ -1,0 +1,78 @@
+openapi: 3.0.3
+info:
+  title: Acme Patient Records API
+  version: 1.0.0
+  description: De-identified patient records for the Clinical Systems team.
+  contact:
+    name: Clinical Systems
+    email: clinical-systems@acme.example
+servers:
+  - url: http://patient-records-api
+tags:
+  - name: patients
+    description: Patient records
+  - name: platform
+    description: Service metadata
+paths:
+  /api/patients:
+    get:
+      operationId: listPatients
+      summary: List patients
+      description: Returns all de-identified patient records.
+      tags: [patients]
+      responses:
+        "200":
+          description: Patient list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Patient"
+  /api/patients/{id}:
+    get:
+      operationId: getPatient
+      summary: Get a patient
+      description: Returns a single de-identified patient record.
+      tags: [patients]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Patient
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patient"
+        "404":
+          description: Not found
+  /api/info:
+    get:
+      operationId: getInfo
+      summary: Service info
+      description: Version, environment and rollout track of the serving pod.
+      tags: [platform]
+      responses:
+        "200":
+          description: Info
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+components:
+  schemas:
+    Patient:
+      type: object
+      required: [id, name, mrn, careUnit]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        mrn: {type: string}
+        careUnit: {type: string}
+        notes: {type: string}

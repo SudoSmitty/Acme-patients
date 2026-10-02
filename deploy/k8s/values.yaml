@@ -1,0 +1,7 @@
+# Harness renders these expressions at deploy time
+name: patient-records-api
+replicas: 3
+image: <+artifacts.primary.image>
+dockercfg: <+artifacts.primary.imagePullSecret>
+version: <+artifacts.primary.tag>
+environment: <+env.identifier>
