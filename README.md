@@ -28,3 +28,9 @@ Kubernetes manifests live in `deploy/k8s` and are rendered by Harness at deploy 
 mvn package && java -jar target/app.jar
 curl localhost:8080/api/patients
 ```
+
+## Delivery
+
+Every push to `main` runs the **Acme Golden Path** pipeline in Harness: platform security scans,
+the team's own checks (API contract lint), build + SBOM + SLSA provenance into Harness Artifact
+Registry, canary to `acme-nonprod` with automated verification, approval, then canary to `acme-prod`.
