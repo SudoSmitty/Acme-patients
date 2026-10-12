@@ -1,0 +1,27 @@
+pipeline:
+  id: pipeline_SudoSmitty_Acme_patients_build_e9af
+  name: pipeline_SudoSmitty_Acme_patients_build_e9af
+  stages:
+    - name: Build and Test
+      id: build_and_test
+      runtime: cloud
+      clone:
+        enabled: true
+      cache:
+        enabled: true
+      build-intelligence:
+        enabled: true
+      steps:
+        - name: Build and Test
+          id: build_test
+          run:
+            container:
+              image: maven:3-eclipse-temurin-21
+            shell: bash
+            script: mvn clean verify -B
+            report:
+              type: junit
+              paths:
+                - "**/target/surefire-reports/*.xml"
+  tags:
+    onboarding: "true"
